@@ -14,7 +14,7 @@ const DataUnitBisnis = () => {
   useEffect(() => {
     const fetchUnits = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/unit-bisnis');
+        const response = await axios.get('https://lestariku.com/api/unit-bisnis');
         setUnits(response.data);
       } catch (error) {
         console.error('Error fetching unit bisnis data:', error);
@@ -25,7 +25,7 @@ const DataUnitBisnis = () => {
 
     const fetchCounts = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/count-unit-bisnis');
+        const response = await axios.get('https://lestariku.com/api/count-unit-bisnis');
         const countsData = response.data.reduce((acc, item) => {
           acc[item.unit_bisnis] = item.count;
           return acc;
@@ -54,7 +54,7 @@ const DataUnitBisnis = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3001/unit-bisnis/${id}`);
+      await axios.delete(`https://lestariku.com/api/unit-bisnis/${id}`);
       setUnits(units.filter(unit => unit.id !== id));
     } catch (error) {
       console.error('Error deleting unit bisnis:', error);
@@ -65,12 +65,12 @@ const DataUnitBisnis = () => {
     event.preventDefault();
     try {
       if (editingItem) {
-        await axios.put(`http://localhost:3001/unit-bisnis/${formData.id}`, { unit_bisnis: formData.unit_bisnis });
+        await axios.put(`https://lestariku.com/api/unit-bisnis/${formData.id}`, { unit_bisnis: formData.unit_bisnis });
         setUnits(units.map((item) =>
           item.id === formData.id ? { ...item, unit_bisnis: formData.unit_bisnis } : item
         ));
       } else {
-        const response = await axios.post('http://localhost:3001/unit-bisnis', { unit_bisnis: formData.unit_bisnis });
+        const response = await axios.post('https://lestariku.com/api/unit-bisnis', { unit_bisnis: formData.unit_bisnis });
         setUnits([...units, response.data]);
       }
       setShowForm(false);

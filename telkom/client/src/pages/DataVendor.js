@@ -14,7 +14,7 @@ const DataVendor = () => {
   useEffect(() => {
     const fetchVendors = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/vendors');
+        const response = await axios.get('https://lestariku.com/api/vendors');
         setVendors(response.data);
       } catch (error) {
         console.error('Error fetching vendors data:', error);
@@ -25,7 +25,7 @@ const DataVendor = () => {
 
     const fetchCounts = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/vendor-counts');
+        const response = await axios.get('https://lestariku.com/api/vendor-counts');
         const countsData = response.data.reduce((acc, item) => {
           acc[item.vendor] = item.count;
           return acc;
@@ -54,7 +54,7 @@ const DataVendor = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3001/vendors/${id}`);
+      await axios.delete(`https://lestariku.com/api/vendors/${id}`);
       setVendors(vendors.filter(v => v.id !== id));
     } catch (error) {
       console.error('Error deleting vendor:', error);
@@ -65,12 +65,12 @@ const DataVendor = () => {
     event.preventDefault();
     try {
       if (editingItem) {
-        await axios.put(`http://localhost:3001/vendors/${formData.id}`, { vendor: formData.vendor });
+        await axios.put(`https://lestariku.com/api/vendors/${formData.id}`, { vendor: formData.vendor });
         setVendors(vendors.map((item) =>
           item.id === formData.id ? { ...item, vendor: formData.vendor } : item
         ));
       } else {
-        const response = await axios.post('http://localhost:3001/vendors', { vendor: formData.vendor });
+        const response = await axios.post('https://lestariku.com/api/vendors', { vendor: formData.vendor });
         setVendors([...vendors, response.data]);
       }
       setShowForm(false);

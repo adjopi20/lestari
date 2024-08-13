@@ -10,7 +10,7 @@ const DataPengajuan = () => {
   useEffect(() => {
     const fetchSubmissions = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/admin/submissions');
+        const response = await axios.get('https://lestariku.com/api/admin/submissions');
         setSubmissions(response.data);
       } catch (error) {
         console.error('Error fetching submissions:', error);
@@ -24,7 +24,7 @@ const DataPengajuan = () => {
 
   const handleEditStatus = async (id, newStatus) => {
     try {
-      await axios.post(`http://localhost:3001/admin/update-status/${id}`, { status: newStatus });
+      await axios.post(`https://lestariku.com/api/admin/update-status/${id}`, { status: newStatus });
       setSubmissions(submissions.map(sub => sub.id === id ? { ...sub, status: newStatus } : sub));
     } catch (error) {
       console.error('Error updating status:', error);
@@ -36,7 +36,7 @@ const DataPengajuan = () => {
     formData.append('file', file);
 
     try {
-      await axios.post(`http://localhost:3001/admin/upload-file/${id}`, formData);
+      await axios.post(`https://lestariku.com/api/admin/upload-file/${id}`, formData);
       setSubmissions(submissions.map(sub => sub.id === id ? { ...sub, file: file.name } : sub));
     } catch (error) {
       console.error('Error uploading file:', error);
@@ -77,7 +77,7 @@ const DataPengajuan = () => {
                 <td>{submission.namaWaspang}</td>
                 <td>{submission.v4Checklist}</td>
                 <td>
-                  <a href={`http://localhost:3001/uploads/${submission.file}`} download>
+                  <a href={`https://lestariku.com/api/uploads/${submission.file}`} download>
                     {submission.file}
                   </a>
                 </td>

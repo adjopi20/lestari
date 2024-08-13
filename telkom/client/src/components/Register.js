@@ -24,7 +24,7 @@ function Register() {
   useEffect(() => {
     const fetchVendors = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/vendors');
+        const response = await axios.get('https://lestariku.com/api/vendors');
         setVendors(response.data);
       } catch (err) {
         console.error('Error fetching vendors:', err);

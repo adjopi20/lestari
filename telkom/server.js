@@ -26,7 +26,7 @@ db.connect((err) => {
   console.log("Connected to database");
 });
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/api/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.post("/api/login", (req, res) => {
   const { username, password } = req.body;
@@ -44,7 +44,7 @@ app.post("/api/login", (req, res) => {
 });
 
 // Endpoint untuk mengambil full_name berdasarkan userId
-app.get("/user/:userId", (req, res) => {
+app.get("/api/user/:userId", (req, res) => {
   const userId = req.params.userId;
 
   const query = "SELECT full_name FROM users WHERE id = ?";
@@ -62,7 +62,7 @@ app.get("/user/:userId", (req, res) => {
   });
 });
 
-app.get("/users", (req, res) => {
+app.get("/api/users", (req, res) => {
   const query =
     "SELECT id, username, password, full_name, nik, vendor, role FROM users WHERE role = ?";
 
@@ -76,7 +76,7 @@ app.get("/users", (req, res) => {
   });
 });
 
-app.post("/register", (req, res) => {
+app.post("/api/register", (req, res) => {
   const { username, password, fullName, nik, vendor, role } = req.body;
   const query =
     "INSERT INTO users (username, password, full_name, nik, vendor, role) VALUES (?, ?, ?, ?, ?, ?)";
@@ -91,7 +91,7 @@ app.post("/register", (req, res) => {
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/");
+    cb(null, "/api/uploads/");
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));
@@ -100,7 +100,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-app.post("/submit", upload.single("file"), (req, res) => {
+app.post("/api/submit", upload.single("file"), (req, res) => {
   const {
     namaLop,
     unitBisnis,
@@ -139,7 +139,7 @@ app.post("/submit", upload.single("file"), (req, res) => {
   );
 });
 
-app.get("/vendors", (req, res) => {
+app.get("/api/vendors", (req, res) => {
   const query = "SELECT id, vendor FROM vendor";
   db.query(query, (err, results) => {
     if (err) throw err;
@@ -147,7 +147,7 @@ app.get("/vendors", (req, res) => {
   });
 });
 
-app.get("/unit-bisnis", (req, res) => {
+app.get("/api/unit-bisnis", (req, res) => {
   const query = "SELECT id, unit_bisnis FROM unit_bisnis";
   db.query(query, (err, results) => {
     if (err) throw err;
@@ -155,7 +155,7 @@ app.get("/unit-bisnis", (req, res) => {
   });
 });
 
-app.get("/lokasi", (req, res) => {
+app.get("/api/lokasi", (req, res) => {
   const query = "SELECT id, lokasi FROM lokasi";
   db.query(query, (err, results) => {
     if (err) throw err;
@@ -163,7 +163,7 @@ app.get("/lokasi", (req, res) => {
   });
 });
 
-app.get("/program", (req, res) => {
+app.get("/api/program", (req, res) => {
   const query = "SELECT id, program FROM program";
   db.query(query, (err, results) => {
     if (err) throw err;
@@ -171,7 +171,7 @@ app.get("/program", (req, res) => {
   });
 });
 
-app.get("/programs", (req, res) => {
+app.get("/api/programs", (req, res) => {
   const sql = "SELECT id, program FROM program";
   db.query(sql, (err, results) => {
     if (err) {
@@ -181,7 +181,7 @@ app.get("/programs", (req, res) => {
   });
 });
 
-app.get("/ket-klarifikasi", (req, res) => {
+app.get("/api/ket-klarifikasi", (req, res) => {
   const query = "SELECT id, ket_klarifikasi FROM ket_klarifikasi";
   db.query(query, (err, results) => {
     if (err) throw err;
@@ -189,7 +189,7 @@ app.get("/ket-klarifikasi", (req, res) => {
   });
 });
 
-app.get("/submissions/:userId", (req, res) => {
+app.get("/api/submissions/:userId", (req, res) => {
   const userId = req.params.userId;
   const query = "SELECT * FROM submissions WHERE user_id = ?";
   db.query(query, [userId], (err, results) => {
@@ -202,7 +202,7 @@ app.get("/submissions/:userId", (req, res) => {
   });
 });
 
-app.get("/admin/overview", (req, res) => {
+app.get("/api/admin/overview", (req, res) => {
   let overviewData = {};
 
   const userQuery = "SELECT COUNT(*) AS count FROM users";
@@ -242,7 +242,7 @@ app.get("/admin/overview", (req, res) => {
   });
 });
 
-app.get("/admin/submissions", (req, res) => {
+app.get("/api/admin/submissions", (req, res) => {
   const query = "SELECT * FROM submissions";
   db.query(query, (err, results) => {
     if (err) {
@@ -254,7 +254,7 @@ app.get("/admin/submissions", (req, res) => {
   });
 });
 
-app.post("/admin/update-status/:id", (req, res) => {
+app.post("/api/admin/update-status/:id", (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
   const query = "UPDATE submissions SET status = ? WHERE id = ?";
@@ -269,7 +269,7 @@ app.post("/admin/update-status/:id", (req, res) => {
   });
 });
 
-app.post("/admin/upload-file/:id", upload.single("file"), (req, res) => {
+app.post("/api/admin/upload-file/:id", upload.single("file"), (req, res) => {
   const { id } = req.params;
   const file = req.file.filename;
   const query = "UPDATE submissions SET file = ? WHERE id = ?";
@@ -284,7 +284,7 @@ app.post("/admin/upload-file/:id", upload.single("file"), (req, res) => {
   });
 });
 
-app.post("/ket-klarifikasi", (req, res) => {
+app.post("/api/ket-klarifikasi", (req, res) => {
   const { ket_klarifikasi } = req.body;
   const query = "INSERT INTO ket_klarifikasi (ket_klarifikasi) VALUES (?)";
 
@@ -294,7 +294,7 @@ app.post("/ket-klarifikasi", (req, res) => {
   });
 });
 
-app.get("/count-programs", (req, res) => {
+app.get("/api/count-programs", (req, res) => {
   const query = `
     SELECT p.program, COUNT(s.program) AS count
     FROM program p
@@ -310,7 +310,7 @@ app.get("/count-programs", (req, res) => {
   });
 });
 
-app.get("/count-unit-bisnis", (req, res) => {
+app.get("/api/count-unit-bisnis", (req, res) => {
   const query = `
     SELECT u.unit_bisnis, COUNT(s.unitBisnis) AS count
     FROM unit_bisnis u
@@ -327,7 +327,7 @@ app.get("/count-unit-bisnis", (req, res) => {
 });
 
 // Endpoint untuk mengedit data ket_klarifikasi berdasarkan ID
-app.put("/ket-klarifikasi/:id", (req, res) => {
+app.put("/api/ket-klarifikasi/:id", (req, res) => {
   const { id } = req.params;
   const { ket_klarifikasi } = req.body;
 
@@ -344,7 +344,7 @@ app.put("/ket-klarifikasi/:id", (req, res) => {
 });
 
 // Endpoint untuk menambah data program
-app.post("/programs", (req, res) => {
+app.post("/api/programs", (req, res) => {
   const { program } = req.body;
 
   const sql = "INSERT INTO program (program) VALUES (?)";
@@ -358,7 +358,7 @@ app.post("/programs", (req, res) => {
 });
 
 // Endpoint untuk menghapus data program berdasarkan ID
-app.delete("/programs/:id", (req, res) => {
+app.delete("/api/programs/:id", (req, res) => {
   const { id } = req.params;
 
   const sql = "DELETE FROM program WHERE id = ?";
@@ -374,7 +374,7 @@ app.delete("/programs/:id", (req, res) => {
 });
 
 // Endpoint untuk mengedit data program berdasarkan ID
-app.put("/programs/:id", (req, res) => {
+app.put("/api/programs/:id", (req, res) => {
   const { id } = req.params;
   const { program } = req.body;
 
@@ -391,7 +391,7 @@ app.put("/programs/:id", (req, res) => {
 });
 
 // Endpoint untuk menambah data unit bisnis
-app.post("/unit-bisnis", (req, res) => {
+app.post("/api/unit-bisnis", (req, res) => {
   const { unit_bisnis } = req.body;
 
   const sql = "INSERT INTO unit_bisnis (unit_bisnis) VALUES (?)";
@@ -405,7 +405,7 @@ app.post("/unit-bisnis", (req, res) => {
 });
 
 // Endpoint untuk mengedit data unit bisnis berdasarkan ID
-app.put("/unit-bisnis/:id", (req, res) => {
+app.put("/api/unit-bisnis/:id", (req, res) => {
   const { id } = req.params;
   const { unit_bisnis } = req.body;
 
@@ -422,7 +422,7 @@ app.put("/unit-bisnis/:id", (req, res) => {
 });
 
 // Endpoint untuk menghapus data unit bisnis berdasarkan ID
-app.delete("/unit-bisnis/:id", (req, res) => {
+app.delete("/api/unit-bisnis/:id", (req, res) => {
   const { id } = req.params;
 
   const sql = "DELETE FROM unit_bisnis WHERE id = ?";
@@ -438,7 +438,7 @@ app.delete("/unit-bisnis/:id", (req, res) => {
 });
 
 // Endpoint untuk menambah data vendor
-app.post("/vendors", (req, res) => {
+app.post("/api/vendors", (req, res) => {
   const { vendor } = req.body;
 
   const sql = "INSERT INTO vendors (vendor) VALUES (?)";
@@ -452,7 +452,7 @@ app.post("/vendors", (req, res) => {
 });
 
 // Endpoint untuk mengedit data vendor berdasarkan ID
-app.put("/vendors/:id", (req, res) => {
+app.put("/api/vendors/:id", (req, res) => {
   const { id } = req.params;
   const { vendor } = req.body;
 
@@ -469,7 +469,7 @@ app.put("/vendors/:id", (req, res) => {
 });
 
 // Endpoint untuk menghapus data vendor berdasarkan ID
-app.delete("/vendors/:id", (req, res) => {
+app.delete("/api/vendors/:id", (req, res) => {
   const { id } = req.params;
 
   const sql = "DELETE FROM vendors WHERE id = ?";
@@ -484,7 +484,7 @@ app.delete("/vendors/:id", (req, res) => {
   });
 });
 
-app.get("/vendor-counts", (req, res) => {
+app.get("/api/vendor-counts", (req, res) => {
   const query = `
     SELECT v.vendor, COUNT(u.vendor) AS count
     FROM vendor v
@@ -500,7 +500,7 @@ app.get("/vendor-counts", (req, res) => {
   });
 });
 
-app.get("/count-ket-klarifikasi", (req, res) => {
+app.get("/api/count-ket-klarifikasi", (req, res) => {
   const query = `
     SELECT k.ket_klarifikasi, COUNT(s.ketKlarifikasi) AS count
     FROM ket_klarifikasi k
@@ -516,7 +516,7 @@ app.get("/count-ket-klarifikasi", (req, res) => {
   });
 });
 
-app.put("/ket-klarifikasi/:id", (req, res) => {
+app.put("/api/ket-klarifikasi/:id", (req, res) => {
   const { id } = req.params;
   const { ket_klarifikasi } = req.body;
   const query = "UPDATE ket_klarifikasi SET ket_klarifikasi = ? WHERE id = ?";
@@ -527,7 +527,7 @@ app.put("/ket-klarifikasi/:id", (req, res) => {
   });
 });
 
-app.delete("/ket-klarifikasi/:id", (req, res) => {
+app.delete("/api/ket-klarifikasi/:id", (req, res) => {
   const { id } = req.params;
   const query = "DELETE FROM ket_klarifikasi WHERE id = ?";
 

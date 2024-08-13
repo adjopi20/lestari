@@ -1,28 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import './SubmissionPage.css';
-import UserNavbar from './UserNavbar'; // Import UserNavbar
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+import "./SubmissionPage.css";
+import UserNavbar from "./UserNavbar"; // Import UserNavbar
 
 function SubmissionPage({ userId }) {
-  const [namaLop, setNamaLop] = useState('');
-  const [unitBisnis, setUnitBisnis] = useState('');
-  const [lokasi, setLokasi] = useState('');
-  const [program, setProgram] = useState('');
-  const [ketKlarifikasi, setKetKlarifikasi] = useState('');
-  const [namaWaspang, setNamaWaspang] = useState('');
+  const [namaLop, setNamaLop] = useState("");
+  const [unitBisnis, setUnitBisnis] = useState("");
+  const [lokasi, setLokasi] = useState("");
+  const [program, setProgram] = useState("");
+  const [ketKlarifikasi, setKetKlarifikasi] = useState("");
+  const [namaWaspang, setNamaWaspang] = useState("");
   const [file, setFile] = useState(null);
   const [unitBisnisOptions, setUnitBisnisOptions] = useState([]);
   const [lokasiOptions, setLokasiOptions] = useState([]);
   const [programOptions, setProgramOptions] = useState([]);
   const [ketKlarifikasiOptions, setKetKlarifikasiOptions] = useState([]);
   const [v4ChecklistOptions] = useState([
-    { value: 'struktur-koordinat', label: 'Struktur Koordinat' },
-    { value: 'spesifikasi', label: 'Spesifikasi' },
-    { value: 'label', label: 'Label' },
-    { value: 'core-management', label: 'Core Management' },
-    { value: 'barcode', label: 'Barcode' },
-    { value: 'evidence', label: 'Evidence' },
+    { value: "struktur-koordinat", label: "Struktur Koordinat" },
+    { value: "spesifikasi", label: "Spesifikasi" },
+    { value: "label", label: "Label" },
+    { value: "core-management", label: "Core Management" },
+    { value: "barcode", label: "Barcode" },
+    { value: "evidence", label: "Evidence" },
   ]);
   const [selectedV4Checklist, setSelectedV4Checklist] = useState([]);
 
@@ -32,19 +32,20 @@ function SubmissionPage({ userId }) {
   useEffect(() => {
     const fetchOptions = async () => {
       try {
-        const [unitBisnisRes, lokasiRes, programRes, ketKlarifikasiRes] = await Promise.all([
-          axios.get('http://localhost:3001/unit-bisnis'),
-          axios.get('http://localhost:3001/lokasi'),
-          axios.get('http://localhost:3001/program'),
-          axios.get('http://localhost:3001/ket-klarifikasi'),
-        ]);
+        const [unitBisnisRes, lokasiRes, programRes, ketKlarifikasiRes] =
+          await Promise.all([
+            axios.get("https://lestariku.com/api/unit-bisnis"),
+            axios.get("https://lestariku.com/api/lokasi"),
+            axios.get("https://lestariku.com/api/program"),
+            axios.get("https://lestariku.com/api/ket-klarifikasi"),
+          ]);
 
         setUnitBisnisOptions(unitBisnisRes.data);
         setLokasiOptions(lokasiRes.data);
         setProgramOptions(programRes.data);
         setKetKlarifikasiOptions(ketKlarifikasiRes.data);
       } catch (err) {
-        console.error('Error fetching options:', err);
+        console.error("Error fetching options:", err);
       }
     };
 
@@ -54,34 +55,36 @@ function SubmissionPage({ userId }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('namaLop', namaLop);
-    formData.append('unitBisnis', unitBisnis);
-    formData.append('lokasi', lokasi);
-    formData.append('program', program);
-    formData.append('ketKlarifikasi', ketKlarifikasi);
-    formData.append('namaWaspang', namaWaspang);
-    formData.append('v4Checklist', selectedV4Checklist.join(',')); // Menggabungkan opsi yang dipilih dengan koma
-    formData.append('file', file);
-    formData.append('userId', userId);
-    formData.append('status', 'Pending');
+    formData.append("namaLop", namaLop);
+    formData.append("unitBisnis", unitBisnis);
+    formData.append("lokasi", lokasi);
+    formData.append("program", program);
+    formData.append("ketKlarifikasi", ketKlarifikasi);
+    formData.append("namaWaspang", namaWaspang);
+    formData.append("v4Checklist", selectedV4Checklist.join(",")); // Menggabungkan opsi yang dipilih dengan koma
+    formData.append("file", file);
+    formData.append("userId", userId);
+    formData.append("status", "Pending");
 
     try {
-      await axios.post('http://localhost:3001/submit', formData, {
+      await axios.post("https://lestariku.com/api/submit", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       });
-      alert('Submission successful');
-      navigate('/user'); // Arahkan ke halaman /user setelah berhasil
+      alert("Submission successful");
+      navigate("/user"); // Arahkan ke halaman /user setelah berhasil
     } catch (err) {
-      alert('Submission failed');
+      alert("Submission failed");
     }
   };
 
   const handleCheckboxChange = (e) => {
     const value = e.target.value;
-    setSelectedV4Checklist(prev =>
-      prev.includes(value) ? prev.filter(item => item !== value) : [...prev, value]
+    setSelectedV4Checklist((prev) =>
+      prev.includes(value)
+        ? prev.filter((item) => item !== value)
+        : [...prev, value]
     );
   };
 
@@ -148,7 +151,7 @@ function SubmissionPage({ userId }) {
           <div className="v4-checklist">
             <label>V4 Checklist</label>
             <div className="v4-checklist-container">
-              {v4ChecklistOptions.map(option => (
+              {v4ChecklistOptions.map((option) => (
                 <div key={option.value} className="checkbox-group">
                   <input
                     type="checkbox"
@@ -168,10 +171,7 @@ function SubmissionPage({ userId }) {
             value={namaWaspang}
             onChange={(e) => setNamaWaspang(e.target.value)}
           />
-          <input
-            type="file"
-            onChange={(e) => setFile(e.target.files[0])}
-          />
+          <input type="file" onChange={(e) => setFile(e.target.files[0])} />
           <button type="submit">Submit</button>
         </form>
       </div>

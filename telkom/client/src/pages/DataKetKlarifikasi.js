@@ -14,7 +14,7 @@ const DataKetKlarifikasi = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/ket-klarifikasi');
+        const response = await axios.get('https://lestariku.com/api/ket-klarifikasi');
         setData(response.data);
       } catch (error) {
         console.error('Error fetching ket klarifikasi data:', error);
@@ -23,7 +23,7 @@ const DataKetKlarifikasi = () => {
 
     const fetchCounts = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/count-ket-klarifikasi');
+        const response = await axios.get('https://lestariku.com/api/count-ket-klarifikasi');
         const countsData = response.data.reduce((acc, item) => {
           acc[item.ket_klarifikasi] = item.count;
           return acc;
@@ -47,7 +47,7 @@ const DataKetKlarifikasi = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3001/ket-klarifikasi/${id}`);
+      await axios.delete(`https://lestariku.com/api/ket-klarifikasi/${id}`);
       setData(data.filter((item) => item.id !== id));
     } catch (error) {
       console.error('Error deleting ket klarifikasi data:', error);
@@ -58,12 +58,12 @@ const DataKetKlarifikasi = () => {
     event.preventDefault();
     try {
       if (editingItem) {
-        await axios.put(`http://localhost:3001/ket-klarifikasi/${formData.id}`, formData);
+        await axios.put(`https://lestariku.com/api/ket-klarifikasi/${formData.id}`, formData);
         setData(data.map((item) =>
           item.id === formData.id ? formData : item
         ));
       } else {
-        await axios.post('http://localhost:3001/ket-klarifikasi', formData);
+        await axios.post('https://lestariku.com/api/ket-klarifikasi', formData);
         setData([...data, formData]);
       }
       setShowForm(false);

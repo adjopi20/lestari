@@ -10,7 +10,7 @@ function RiwayatPengajuan({ userId }) {
   useEffect(() => {
     const fetchSubmissions = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/submissions/${userId}`);
+        const response = await axios.get(`https://lestariku.com/api/submissions/${userId}`);
         setSubmissions(response.data);
       } catch (error) {
         console.error('Error fetching submissions:', error);
