@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import AdminLayout from './AdminLayout';
-import axios from 'axios';
-import './AdminPage.css';
+import React, { useState, useEffect } from "react";
+import AdminLayout from "./AdminLayout";
+import axios from "axios";
+import "./AdminPage.css";
 
 const AdminDashboard = () => {
   const [overview, setOverview] = useState({
@@ -15,10 +15,12 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/admin/overview');
+        const response = await axios.get(
+          "https://lestariku.com/api/admin/overview"
+        );
         setOverview(response.data);
       } catch (error) {
-        console.error('Error fetching overview data:', error);
+        console.error("Error fetching overview data:", error);
       }
     };
 

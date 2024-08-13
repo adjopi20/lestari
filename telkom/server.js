@@ -7,7 +7,11 @@ const path = require("path");
 const port = 3001;
 
 const app = express();
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://lestariku.com"],
+  })
+);
 app.use(bodyParser.json());
 
 const db = mysql.createConnection({

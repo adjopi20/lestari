@@ -26,7 +26,7 @@ function Login({ setUserId }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://34.170.54.24:3001/login", {
+      const res = await axios.post("https://lestariku.com/api/login", {
         username,
         password,
       });
