@@ -28,7 +28,7 @@ db.connect((err) => {
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-app.post("/login", (req, res) => {
+app.post("/api/login", (req, res) => {
   const { username, password } = req.body;
   const query =
     "SELECT id, role FROM users WHERE username = ? AND password = ?";
