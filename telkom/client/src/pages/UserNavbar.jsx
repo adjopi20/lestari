@@ -16,7 +16,7 @@ const UserNavbar = () => {
   useEffect(() => {
     if (userId) {
       // Replace the URL with your server's URL
-      const url = `http://localhost:3001/user/${userId}`;
+      const url = `https://lestariku.com/api/user/${userId}`;
 
       fetch(url)
         .then(response => {
