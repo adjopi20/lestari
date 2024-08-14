@@ -91,7 +91,8 @@ app.post("/api/register", (req, res) => {
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "/uploads/");
+    // cb(null, "/uploads/");
+    cb(null, path.join(__dirname, "uploads")); // Correct path
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));
